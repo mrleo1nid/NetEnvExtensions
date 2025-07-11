@@ -5,15 +5,27 @@ using Microsoft.Extensions.Configuration;
 
 namespace NetEnvExtensions
 {
+    /// <summary>
+    /// Провайдер конфигурации, который выполняет подстановку переменных окружения в значения конфигурации.
+    /// </summary>
     public class EnvironmentVariableSubstitutionProvider : ConfigurationProvider
     {
         private readonly IConfigurationRoot _root;
 
+        /// <summary>
+        /// Создает новый экземпляр <see cref="EnvironmentVariableSubstitutionProvider"/>.
+        /// </summary>
+        /// <param name="root">Корень конфигурации для поиска переменных.</param>
         public EnvironmentVariableSubstitutionProvider(IConfigurationRoot root)
         {
             _root = root;
         }
 
+        /// <summary>
+        /// Строит провайдер подстановки переменных окружения для указанного билдера конфигурации.
+        /// </summary>
+        /// <param name="builder">Билдер конфигурации.</param>
+        /// <returns>Провайдер конфигурации с поддержкой подстановки переменных окружения.</returns>
         public static IConfigurationProvider Build(IConfigurationBuilder builder)
         {
             return new EnvironmentVariableSubstitutionProvider(
@@ -22,6 +34,9 @@ namespace NetEnvExtensions
             );
         }
 
+        /// <summary>
+        /// Загружает значения конфигурации с учетом подстановки переменных окружения.
+        /// </summary>
         public override void Load()
         {
             var data = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
