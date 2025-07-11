@@ -9,6 +9,17 @@ namespace NetEnvExtensions
     /// </summary>
     public class EnvironmentVariableSubstitutionSource : IConfigurationSource
     {
+        private readonly TimeSpan? _regexTimeout;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="EnvironmentVariableSubstitutionSource"/>.
+        /// </summary>
+        /// <param name="regexTimeout">Optional timeout for the variable substitution regex. Default is 10 seconds.</param>
+        public EnvironmentVariableSubstitutionSource(TimeSpan? regexTimeout = null)
+        {
+            _regexTimeout = regexTimeout;
+        }
+
         /// <summary>
         /// Builds a configuration provider with environment variable substitution support.
         /// </summary>
@@ -26,7 +37,7 @@ namespace NetEnvExtensions
             foreach (var src in filteredSources)
                 tempBuilder.Add(src);
             var root = tempBuilder.Build();
-            return new EnvironmentVariableSubstitutionProvider(root);
+            return new EnvironmentVariableSubstitutionProvider(root, _regexTimeout);
         }
     }
 }

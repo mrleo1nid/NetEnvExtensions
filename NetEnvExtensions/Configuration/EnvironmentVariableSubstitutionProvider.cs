@@ -11,14 +11,24 @@ namespace NetEnvExtensions
     public class EnvironmentVariableSubstitutionProvider : ConfigurationProvider
     {
         private readonly IConfigurationRoot _root;
+        private readonly Regex _variablePattern;
 
         /// <summary>
         /// Creates a new instance of <see cref="EnvironmentVariableSubstitutionProvider"/>.
         /// </summary>
         /// <param name="root">The configuration root to search for variables.</param>
-        public EnvironmentVariableSubstitutionProvider(IConfigurationRoot root)
+        /// <param name="regexTimeout">Optional timeout for the variable substitution regex. Default is 10 seconds.</param>
+        public EnvironmentVariableSubstitutionProvider(
+            IConfigurationRoot root,
+            TimeSpan? regexTimeout = null
+        )
         {
             _root = root;
+            _variablePattern = new Regex(
+                @"\$\{([^:}]+)(?::([^}]*))?\}",
+                RegexOptions.Compiled,
+                regexTimeout ?? TimeSpan.FromSeconds(10)
+            );
         }
 
         /// <summary>
@@ -56,12 +66,12 @@ namespace NetEnvExtensions
             Data = data;
         }
 
-        private static string SubstituteVariables(string value)
+        private string SubstituteVariables(string value)
         {
             if (string.IsNullOrEmpty(value) || !value.Contains("${"))
                 return value;
 
-            return VariablePattern.Replace(
+            return _variablePattern.Replace(
                 value,
                 match =>
                 {
@@ -75,11 +85,5 @@ namespace NetEnvExtensions
                 }
             );
         }
-
-        private static readonly Regex VariablePattern = new Regex(
-            @"\$\{([^:}]+)(?::([^}]*))?\}",
-            RegexOptions.Compiled,
-            TimeSpan.FromSeconds(10)
-        );
     }
 }

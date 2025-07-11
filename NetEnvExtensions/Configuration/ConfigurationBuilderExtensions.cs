@@ -12,12 +12,14 @@ namespace NetEnvExtensions
         /// Adds support for environment variable substitution in configuration values to the configuration builder.
         /// </summary>
         /// <param name="builder">The configuration builder.</param>
+        /// <param name="regexTimeout">Optional timeout for the variable substitution regex. Default is 10 seconds.</param>
         /// <returns>The configuration builder with environment variable substitution support.</returns>
         public static IConfigurationBuilder AddEnvironmentVariableSubstitution(
-            this IConfigurationBuilder builder
+            this IConfigurationBuilder builder,
+            TimeSpan? regexTimeout = null
         )
         {
-            return builder.Add(new EnvironmentVariableSubstitutionSource());
+            return builder.Add(new EnvironmentVariableSubstitutionSource(regexTimeout));
         }
     }
 }
