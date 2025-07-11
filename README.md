@@ -1,6 +1,6 @@
 # NetEnvExtensions
 
-[![Build status](https://github.com/mrleo1nid/NetEnvExtensions/actions/workflows/publish-nuget.yml/badge.svg )](https://github.com/mrleo1nid/NetEnvExtensions/actions/workflows/publish-nuget.yml )
+[![Build status](https://github.com/mrleo1nid/NetEnvExtensions/actions/workflows/publish-nuget.yml/badge.svg )](https://github.com/mrleo1nid/NetEnvExtensions/actions/workflows/nuget.yml )
 [![NuGet version](https://img.shields.io/nuget/v/NetEnvExtensions )](https://www.nuget.org/packages/NetEnvExtensions )
 
 
