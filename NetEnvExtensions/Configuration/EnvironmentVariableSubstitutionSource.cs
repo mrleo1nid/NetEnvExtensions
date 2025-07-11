@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 
 namespace NetEnvExtensions
@@ -15,10 +16,17 @@ namespace NetEnvExtensions
         /// <returns>A configuration provider with environment variable substitution support.</returns>
         public IConfigurationProvider Build(IConfigurationBuilder builder)
         {
-            return new EnvironmentVariableSubstitutionProvider(
-                builder.Build()
-                    ?? throw new InvalidOperationException("Failed to build configuration root.")
-            );
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder));
+            // Создаём копию builder без EnvironmentVariableSubstitutionSource
+            var filteredSources = builder
+                .Sources.Where(s => !(s is EnvironmentVariableSubstitutionSource))
+                .ToList();
+            var tempBuilder = new ConfigurationBuilder();
+            foreach (var src in filteredSources)
+                tempBuilder.Add(src);
+            var root = tempBuilder.Build();
+            return new EnvironmentVariableSubstitutionProvider(root);
         }
     }
 }
