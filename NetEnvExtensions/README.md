@@ -84,6 +84,29 @@ var builder = new ConfigurationBuilder()
     .AddEnvironmentVariableSubstitution();
 ```
 
+**Alternative: Integration with DotNetEnv.Configuration**
+
+If you use the [DotNetEnv.Configuration](https://github.com/tonerdo/dotnet-env#aspnet-core-integration) package, you can integrate .env loading directly into the configuration builder:
+
+```csharp
+_builder
+    .Configuration.AddJsonFile(
+        "appsettings.json",
+        optional: false,
+        reloadOnChange: true
+    )
+    .AddJsonFile(
+        $"appsettings.{_builder.Environment.EnvironmentName}.json",
+        optional: true
+    )
+#if DEBUG
+    .AddDotNetEnv(".env", LoadOptions.TraversePath())
+#endif
+    .AddEnvironmentVariableSubstitution();
+```
+
+This approach loads .env variables only in DEBUG and makes them available for substitution. Requires the DotNetEnv.Configuration package.
+
 ## Known limitations
 
 - **No recursion**: Variable substitution does not support nested or recursive variables (e.g., `${VAR_${NESTED}}` will not be resolved).
