@@ -33,6 +33,4 @@ jobs:
         run: dotnet pack NetEnvExtensions/NetEnvExtensions.csproj --configuration Release --output ./nupkgs /p:Version=${{ env.version }}
 
       - name: Publish to NuGet
-        run: |
-          dotnet nuget add source --name nuget.org https://api.nuget.org/v3/index.json 
-          dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source nuget.org
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source nuget.org
