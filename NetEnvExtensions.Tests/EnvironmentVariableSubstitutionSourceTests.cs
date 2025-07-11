@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using NetEnvExtensions;
-using Xunit;
 
 namespace NetEnvExtensions.Tests
 {

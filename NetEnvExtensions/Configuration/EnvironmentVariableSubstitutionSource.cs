@@ -1,7 +1,7 @@
-using System;
-using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 
 namespace NetEnvExtensions
 {
