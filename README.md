@@ -4,7 +4,7 @@
 ![Tests](https://github.com/mrleo1nid/NetEnvExtensions/actions/workflows/test.yml/badge.svg)
 [![NuGet version](https://img.shields.io/nuget/v/NetEnvExtensions )](https://www.nuget.org/packages/NetEnvExtensions )
 
->  Russian version: [NetEnvExtensions/README.ru.md](NetEnvExtensions/README.ru.md)
+>  Russian version: [README.ru.md](README.ru.md)
 
 NetEnvExtensions is an extension for .NET that automatically substitutes environment variable values into your application configuration (e.g., from appsettings.json or other sources) using the syntax `${VAR_NAME}` or `${VAR_NAME:default}`.
 
