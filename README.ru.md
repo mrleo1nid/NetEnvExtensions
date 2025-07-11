@@ -32,9 +32,11 @@ dotnet add package NetEnvExtensions
 using NetEnvExtensions;
 ```
 
-2. Добавьте расширение в ваш `IConfigurationBuilder`:
+2. Добавьте расширение в ваш IConfigurationBuilder:
 
 ```csharp
+DotNetEnv.Env.Load(); // Загружает переменные из .env в окружение процесса
+
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -48,42 +50,27 @@ var configuration = builder.Build();
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=${DB_HOST:localhost};Port=${DB_PORT:5432};User Id=${DB_USER};Password=${DB_PASS}"  
+    "DefaultConnection": "Server=${DB_HOST:localhost};Port=${DB_PORT:5432};User Id=${DB_USER};Password=${DB_PASS}"
   }
 }
 ```
 
 Если переменная окружения не определена, будет использовано значение по умолчанию (если указано).
 
+> **Примечание:** Если вам нужно подгружать переменные окружения из файла `.env`, используйте сторонние библиотеки (например, [DotNetEnv](https://github.com/tonerdo/dotnet-env)) до вызова AddEnvironmentVariableSubstitution. Этот пакет не включает загрузку .env по умолчанию.
+
 ## Загрузка .env файлов
 
-Для автоматической загрузки переменных из файла `.env` используйте параметр `path` в расширении:
+Если вам нужно подгрузить переменные окружения из файла `.env`, используйте стороннюю библиотеку, например [DotNetEnv](https://github.com/tonerdo/dotnet-env), до вызова AddEnvironmentVariableSubstitution:
 
 ```csharp
+DotNetEnv.Env.Load(); // Загружает переменные из .env в окружение процесса
+
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddEnvironmentVariableSubstitution(path: ".env");
-
-var configuration = builder.Build();
+    .AddEnvironmentVariableSubstitution();
 ```
-
-> **Внимание:** Класс `EnvironmentLoader` был удалён. Для загрузки `.env` файлов используйте параметр `path` в методе `AddEnvironmentVariableSubstitution`.
-
-### Использование LoadOptions.TraversePath()
-
-Если структура вашего проекта требует поиска файла `.env` в родительских директориях, используйте опцию `LoadOptions.TraversePath()` из DotNetEnv:
-
-```csharp
-var builder = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddEnvironmentVariableSubstitution(path: ".env", options: LoadOptions.TraversePath());
-
-var configuration = builder.Build();
-```
-
-Это позволит DotNetEnv искать файл `.env` в указанной директории и всех родительских директориях, пока файл не будет найден.
 
 ## Лицензия
 

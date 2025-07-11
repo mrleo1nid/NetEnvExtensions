@@ -33,6 +33,8 @@ using NetEnvExtensions;
 2. Add the extension to your `IConfigurationBuilder`:
 
 ```csharp
+DotNetEnv.Env.Load(); // Loads variables from .env into the process environment
+
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -55,33 +57,16 @@ If an environment variable is not defined, the default value will be used (if sp
 
 ## Loading .env files
 
-To automatically load variables from a `.env` file, use the `path` parameter in the extension:
+If you want to load environment variables from a `.env` file, you can use a third-party library such as [DotNetEnv](https://github.com/tonerdo/dotnet-env) before building the configuration:
 
 ```csharp
+DotNetEnv.Env.Load(); // Loads variables from .env into the process environment
+
 var builder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddEnvironmentVariableSubstitution(path: ".env");
-
-var configuration = builder.Build();
+    .AddEnvironmentVariableSubstitution();
 ```
-
-> **Note:** The `EnvironmentLoader` class has been removed. Use the `path` parameter in `AddEnvironmentVariableSubstitution` to load `.env` files.
-
-### Using LoadOptions.TraversePath()
-
-If your project structure requires searching for a `.env` file in parent directories, you can use the `LoadOptions.TraversePath()` option from DotNetEnv:
-
-```csharp
-var builder = new ConfigurationBuilder()
-    .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .AddEnvironmentVariableSubstitution(path: ".env", options: LoadOptions.TraversePath());
-
-var configuration = builder.Build();
-```
-
-This will make DotNetEnv search for the `.env` file in the specified directory and all parent directories until it is found.
 
 ## License
 
