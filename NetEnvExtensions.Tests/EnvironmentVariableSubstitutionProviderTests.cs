@@ -78,5 +78,48 @@ namespace NetEnvExtensions.Tests
             Assert.True(provider.TryGet("Key6", out var value));
             Assert.Equal("", value);
         }
+
+        [Fact]
+        public void SubstituteVariables_LongStringWithManyVariables()
+        {
+            // Arrange
+            var dict = new Dictionary<string, string?>();
+            var expected = "";
+            var value = "";
+            for (int i = 0; i < 1000; i++)
+            {
+                var varName = $"STRESS_{i}";
+                Environment.SetEnvironmentVariable(varName, $"val{i}");
+                value += $"${{{varName}}}-";
+                expected += $"val{i}-";
+            }
+            dict["StressKey"] = value;
+            var config = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+            var provider = new EnvironmentVariableSubstitutionProvider(config);
+            provider.Load();
+            Assert.True(provider.TryGet("StressKey", out var result));
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void SubstituteVariables_LargeNumberOfConfigEntries()
+        {
+            // Arrange
+            var dict = new Dictionary<string, string?>();
+            for (int i = 0; i < 5000; i++)
+            {
+                var varName = $"BULK_{i}";
+                Environment.SetEnvironmentVariable(varName, $"bulk{i}");
+                dict[$"Key{i}"] = $"${{{varName}}}";
+            }
+            var config = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+            var provider = new EnvironmentVariableSubstitutionProvider(config);
+            provider.Load();
+            for (int i = 0; i < 5000; i++)
+            {
+                Assert.True(provider.TryGet($"Key{i}", out var result));
+                Assert.Equal($"bulk{i}", result);
+            }
+        }
     }
 }

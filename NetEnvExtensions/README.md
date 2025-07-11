@@ -35,6 +35,23 @@ var builder = new ConfigurationBuilder()
 var configuration = builder.Build();
 ```
 
+**Optional: Pass a logger for diagnostics**
+
+If you want to log warnings about missing environment variables, you can pass an `ILogger` instance:
+
+```csharp
+using Microsoft.Extensions.Logging;
+
+ILogger logger = ...; // Get or create an ILogger instance
+
+var builder = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariableSubstitution(null, logger); // Pass logger as the second argument
+```
+
+This will log warnings if a variable is not found and no default is provided.
+
 3. Use environment variables in your appsettings.json:
 
 ```json
@@ -66,3 +83,10 @@ var builder = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariableSubstitution();
 ```
+
+## Known limitations
+
+- **No recursion**: Variable substitution does not support nested or recursive variables (e.g., `${VAR_${NESTED}}` will not be resolved).
+- **Flat variables only**: Only flat (non-hierarchical) environment variables are supported.
+- **No .env loading by default**: You must use a third-party library (e.g., DotNetEnv) to load .env files.
+- **Logging is optional**: Warnings about missing variables are logged only if an ILogger is provided explicitly or available in the configuration builder's services.
