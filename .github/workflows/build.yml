@@ -3,7 +3,7 @@ name: Build and Publish NuGet Package
 on:
   push:
     tags:
-      - 'v*' # Например: git tag v1.0.0
+      - 'v*' 
 
 jobs:
   build:
@@ -24,10 +24,13 @@ jobs:
           echo "version=$TAG" >> $GITHUB_ENV
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore NetEnvExtensions/NetEnvExtensions.csproj
+
+      - name: Build
+        run: dotnet build NetEnvExtensions/NetEnvExtensions.csproj --configuration Release --no-restore
 
       - name: Build and Pack
-        run: dotnet pack --configuration Release --output ./nupkgs /p:Version=${{ env.version }}
+        run: dotnet pack NetEnvExtensions/NetEnvExtensions.csproj --configuration Release --output ./nupkgs /p:Version=${{ env.version }}
 
       - name: Publish to NuGet
         run: |
