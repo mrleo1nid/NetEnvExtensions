@@ -76,8 +76,8 @@ If an environment variable is not defined, the default value will be used (if sp
 
 ### Typical scenarios
 
-- **Local development:** Use `.env` file and set `useDotNetEnvOnlyDevelopment: true` (default).
-- **Docker/Production:** Set environment variables via Docker or system, and use `useDotNetEnvOnlyDevelopment: false` to skip loading `.env`.
+- **Local development:** Use `.env` file and call `DotNetEnv.Env.Load()` before building the configuration.
+- **Docker/Production:** Set environment variables via Docker or system, and do not call `DotNetEnv.Env.Load()`.
 
 ## Loading .env files
 
