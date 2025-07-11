@@ -4,15 +4,15 @@ using Microsoft.Extensions.Configuration;
 namespace NetEnvExtensions
 {
     /// <summary>
-    /// Источник конфигурации, поддерживающий подстановку переменных окружения в значения.
+    /// A configuration source that supports environment variable substitution in values.
     /// </summary>
     public class EnvironmentVariableSubstitutionSource : IConfigurationSource
     {
         /// <summary>
-        /// Строит провайдер конфигурации с поддержкой подстановки переменных окружения.
+        /// Builds a configuration provider with environment variable substitution support.
         /// </summary>
-        /// <param name="builder">Билдер конфигурации.</param>
-        /// <returns>Провайдер конфигурации с поддержкой подстановки переменных окружения.</returns>
+        /// <param name="builder">The configuration builder.</param>
+        /// <returns>A configuration provider with environment variable substitution support.</returns>
         public IConfigurationProvider Build(IConfigurationBuilder builder)
         {
             return new EnvironmentVariableSubstitutionProvider(

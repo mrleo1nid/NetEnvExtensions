@@ -6,26 +6,26 @@ using Microsoft.Extensions.Configuration;
 namespace NetEnvExtensions
 {
     /// <summary>
-    /// Провайдер конфигурации, который выполняет подстановку переменных окружения в значения конфигурации.
+    /// A configuration provider that performs environment variable substitution in configuration values.
     /// </summary>
     public class EnvironmentVariableSubstitutionProvider : ConfigurationProvider
     {
         private readonly IConfigurationRoot _root;
 
         /// <summary>
-        /// Создает новый экземпляр <see cref="EnvironmentVariableSubstitutionProvider"/>.
+        /// Creates a new instance of <see cref="EnvironmentVariableSubstitutionProvider"/>.
         /// </summary>
-        /// <param name="root">Корень конфигурации для поиска переменных.</param>
+        /// <param name="root">The configuration root to search for variables.</param>
         public EnvironmentVariableSubstitutionProvider(IConfigurationRoot root)
         {
             _root = root;
         }
 
         /// <summary>
-        /// Строит провайдер подстановки переменных окружения для указанного билдера конфигурации.
+        /// Builds an environment variable substitution provider for the specified configuration builder.
         /// </summary>
-        /// <param name="builder">Билдер конфигурации.</param>
-        /// <returns>Провайдер конфигурации с поддержкой подстановки переменных окружения.</returns>
+        /// <param name="builder">The configuration builder.</param>
+        /// <returns>A configuration provider with environment variable substitution support.</returns>
         public static IConfigurationProvider Build(IConfigurationBuilder builder)
         {
             return new EnvironmentVariableSubstitutionProvider(
@@ -35,7 +35,7 @@ namespace NetEnvExtensions
         }
 
         /// <summary>
-        /// Загружает значения конфигурации с учетом подстановки переменных окружения.
+        /// Loads the configuration values with environment variable substitution applied.
         /// </summary>
         public override void Load()
         {
