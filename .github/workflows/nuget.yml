@@ -22,11 +22,7 @@ jobs:
           TAG=$(echo ${GITHUB_REF#refs/tags/} | sed 's/^v//')
           echo "Extracted version: $TAG"
           echo "version=$TAG" >> $GITHUB_ENV
-
-      - name: Copy README.md to project folder
-        run: |
-          cp ../README.md ./NetEnvExtensions/
-
+          
       - name: Restore dependencies
         run: dotnet restore NetEnvExtensions/NetEnvExtensions.csproj
 
