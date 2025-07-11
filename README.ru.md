@@ -6,7 +6,7 @@
 ![Tests](https://github.com/mrleo1nid/NetEnvExtensions/actions/workflows/test.yml/badge.svg)
 [![NuGet version](https://img.shields.io/nuget/v/NetEnvExtensions )](https://www.nuget.org/packages/NetEnvExtensions )
 
-> 🇬🇧 English version: [README.md](README.md)
+> English version: [README.md](README.md)
 
 NetEnvExtensions — это расширение для .NET, позволяющее автоматически подставлять значения переменных окружения в конфигурацию приложения (например, из appsettings.json или других источников), используя синтаксис `${VAR_NAME}` или `${VAR_NAME:default}`.
 
